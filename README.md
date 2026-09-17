@@ -4,7 +4,7 @@ A responsive Movie Explorer application built with React. Browse through thousan
 
 ## Live Demo
 
-[View Live](https://your-deployment-url.com)
+View Live: (https://movie-explorer-70oh.vercel.app/)
 
 ## Features
 
