@@ -4,7 +4,9 @@ import MovieCard from '../components/MovieCard';
 import MovieModal from '../components/MovieModal';
 import { fetchAllShows, searchShows } from '../services/api';
 
+
 const Movies = () => {
+
   const [shows, setShows] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -12,17 +14,27 @@ const Movies = () => {
   const [selectedShow, setSelectedShow] = useState(null);
 
   const loadShows = useCallback(async () => {
+
     try {
       setLoading(true);
       setError(null);
       const data = await fetchAllShows();
       setShows(data);
+
     } catch (err) {
+
       setError('Failed to load shows. Please try again later.');
+
     } finally {
+
       setLoading(false);
+
     }
+
+
   }, []);
+
+
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -30,23 +42,31 @@ const Movies = () => {
       return;
     }
 
+
     const searchTimer = setTimeout(async () => {
+
       try {
         setLoading(true);
         setError(null);
+
         const data = await searchShows(searchQuery);
         setShows(data.map((item) => item.show));
       } catch (err) {
+
         setError('Failed to search shows. Please try again later.');
       } finally {
+
         setLoading(false);
       }
+
     }, 500);
 
     return () => clearTimeout(searchTimer);
+
   }, [searchQuery, loadShows]);
 
   return (
+
     <div className="min-h-screen bg-dark-200 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
@@ -66,6 +86,7 @@ const Movies = () => {
           />
         </div>
 
+
         {error && (
           <div className="text-center py-10">
             <p className="text-red-500 mb-4">{error}</p>
@@ -78,7 +99,9 @@ const Movies = () => {
           </div>
         )}
 
+
         {loading ? (
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
             {Array.from({ length: 20 }).map((_, i) => (
               <div key={i} className="bg-dark-100 rounded-xl overflow-hidden animate-pulse">
@@ -88,34 +111,55 @@ const Movies = () => {
                   <div className="h-4 bg-dark-300 rounded w-1/2" />
                   <div className="h-10 bg-dark-300 rounded" />
                 </div>
+
               </div>
+
             ))}
+
           </div>
         ) : (
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
             {shows.map((show) => (
+
               <MovieCard
+
                 key={show.id}
                 show={show}
                 onSeeDetails={setSelectedShow}
               />
             ))}
+
           </div>
         )}
 
+
         {!loading && !error && shows.length === 0 && (
           <div className="text-center py-20">
+
             <p className="text-gray-500 text-lg">No shows found.</p>
+            
           </div>
+
         )}
       </div>
+
 
       <MovieModal
         show={selectedShow}
         onClose={() => setSelectedShow(null)}
       />
+
     </div>
+
+
   );
+
+
+
 };
+
+
+
 
 export default Movies;
